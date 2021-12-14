@@ -20,10 +20,11 @@ export default function Zip(props) {
     >
       <TextField 
         fullWidth 
-        type='number' 
+        type='tel'
         label="Enter Zip" 
         id="zip" 
         value={zip}
+        inputProps={{ maxLength: 5 }}
         onChange={setAllZips}
       />
     </Box>
