@@ -39,6 +39,7 @@ export default function Categories(props) {
   return (
     <Box
     sx={{
+      width: 300,
       maxWidth: '100%',
     }}
   >
