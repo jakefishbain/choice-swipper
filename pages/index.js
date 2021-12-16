@@ -40,7 +40,7 @@ export default function Home() {
     // console.log('index categories...', cats)
     let aliases = cats.map( c => c.alias)
     let alias_str = aliases.join()
-    console.log(alias_str)
+    console.log('alias str', alias_str)
     setQueryCategories(alias_str)
   }
 
@@ -87,8 +87,11 @@ export default function Home() {
       headers: myHeaders,
       redirect: 'follow'
     };
+    console.log('queryCats...', queryCategories)
+    let queryUrl = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?open_now=true&categories=${queryCategories}&limit=50&location='${zip}'`
+    // console.log('queryUrl', queryUrl)
 
-    fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?open_now=true&categories=${queryCategories}&limit=50&location='${zip}'`, requestOptions)
+    fetch(queryUrl, requestOptions)
       .then(response => response.text())
       .then(result => { 
         // console.log('result', result) 

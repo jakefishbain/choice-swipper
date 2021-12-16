@@ -39,7 +39,7 @@ export default function Categories(props) {
 
     let tempCategories = categories.filter(c => c != catToAdd)
     setCategories(tempCategories)
-    props.setIndexCats(selectedCategories)
+    props.setIndexCats([...selectedCategories, catToAdd])
   }
   
   const handleRemove = (catToRemove) => () => {
@@ -47,7 +47,7 @@ export default function Categories(props) {
     
     let tempCategories = selectedCategories.filter(c => c != catToRemove)
     setSelectedCategories(tempCategories)
-    props.setIndexCats(selectedCategories)
+    props.setIndexCats(selectedCategories.filter(c => c != catToRemove))
   }
 
 
