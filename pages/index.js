@@ -26,14 +26,23 @@ export default function Home() {
   const [activeStep, setActiveStep] = useState(0);
   const [zip, setZip] = useState()
   const [categories, setCategories] = useState([])
+  const [queryCategories, setQueryCategories] = useState()
 
   const setAllZips = (childZip) => {
     // console.log('index childZip', childZip)
     setZip(childZip)
   }
 
-  const getYelpCategories = async () => {
-    console.log('gewtting categoires...')
+  const setAllSelectedCategories = (cats) => {
+    console.log('index categories...', cats)
+    let aliases = cats.map( c => c.alias)
+    let alias_str = aliases.join()
+    console.log(alias_str)
+    setQueryCategories(alias_str)
+  }
+
+  // const getYelpCategories = async () => {
+    // console.log('getting categories...')
 
     // client.allCategories().then(response => {
     //   console.log(response.jsonBody.categories[0].alias);
@@ -43,24 +52,43 @@ export default function Home() {
 
     // let results;
 
-    fetch('https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/categories', {
-      method: 'GET',
-      headers: {
-        "accept": "application/json",
-        "x-requested-with": "xmlhttprequest",
-        "Access-Control-Allow-Origin": "*",
-        "Authorization": `Bearer ${process.env.NEXT_PUBLIC_YELP_FUSION_KEY}`
-      }
-    })
-    .then(res => res.json())
-    .then(res => {
-      let categories = res.categories
-
-      categories.map(c => c.parent_aliases.includes('resutaurants'))
-      setCategories(categories)
-    })
+    // fetch('https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/categories', {
+    //   method: 'GET',
+    //   headers: {
+    //     "accept": "application/json",
+    //     "x-requested-with": "xmlhttprequest",
+    //     "Access-Control-Allow-Origin": "*",
+    //     "Authorization": `Bearer ${process.env.NEXT_PUBLIC_YELP_FUSION_KEY}`
+    //   }
+    // })
+    // .then(res => res.json())
+    // .then(res => {
+    //   let categories = res.categories
+    //   console.log(categories)
+    //   let filteredCategories = categories.filter(c => c.parent_aliases.includes('restaurants'))
+    //   setCategories(filteredCategories)
+    // })
+    // setCategories([1,2,3])
 
     // console.log('results', results)
+  // }
+
+  const queryForResults = () => {
+    let myHeaders = new Headers();
+    myHeaders.append("Accept", "application/json");
+    myHeaders.append("X-Requested-With", "xmlhttprequest");
+    myHeaders.append("Authorization", `Bearer ${process.env.NEXT_PUBLIC_YELP_FUSION_KEY}`);
+
+    let requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?open_now=true&categories='${queryCategories}'&limit=50&location='${zip}'`, requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
   }
 
   const steps = [
@@ -71,14 +99,11 @@ export default function Home() {
     },
     {
       label: 'Select Categories',
-      html: <Categories categories/>
+      html: <Categories categories={categories} setIndexCats={setAllSelectedCategories}/>
     },
     {
       label: 'Results',
-      description: `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`,
+      // html: <Results />
     },
   ];
 
@@ -94,11 +119,11 @@ export default function Home() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  useEffect(() => {
-    // getChoice()
-    console.log('activeStep', activeStep)
-    // activeStep === 1 && getYelpCategories()
-  }, [activeStep])
+  // useEffect(() => {
+  //   // getChoice()
+  //   console.log('activeStep', activeStep)
+
+  // }, [activeStep])
 
   // async function getChoice() {
   //   try {
@@ -136,8 +161,8 @@ export default function Home() {
           >
             <Typography>{steps[activeStep].label}</Typography>
           </Paper>
-          <Box sx={{ height: 620, maxWidth: 400, width: '100%', p: 2 }}>
-            {steps[activeStep].html}
+          <Box sx={{ height: '620px', maxWidth: 400, width: '100%', p: 2, border: '1px solid black', overflow: 'auto', position: 'relative' }}>
+              {steps[activeStep].html}
           </Box>
           <MobileStepper
             variant="text"
