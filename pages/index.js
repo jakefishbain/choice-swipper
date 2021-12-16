@@ -88,7 +88,7 @@ export default function Home() {
       redirect: 'follow'
     };
 
-    fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?open_now=true&categories='${queryCategories}'&limit=50&location='${zip}'`, requestOptions)
+    fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?open_now=true&categories=${queryCategories}&limit=50&location='${zip}'`, requestOptions)
       .then(response => response.text())
       .then(result => { 
         // console.log('result', result) 
