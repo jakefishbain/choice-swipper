@@ -15,8 +15,9 @@ export default function Results(props) {
   const [random, setRandom] = useState();
 
   const starDisplay = (rating) => {
+    // console.log(rating)
     let hasHalf = Math.floor(rating) != Math.ceil(rating)
-    let starArray = [...Array(Math.floor(5)).keys()]
+    let starArray = [...Array(Math.floor(rating)).keys()]
 
     if(hasHalf) {
       return <span>{ starArray.map(_ => <StarIcon fontSize='small' />) }<StarHalfIcon fontSize='small' /></span>
@@ -27,7 +28,7 @@ export default function Results(props) {
 
   useEffect(() => {
     // console.log('res results', props.results && JSON.parse(props.results).businesses)
-    setItems(props.results && JSON.parse(props.results).businesses)
+    setItems(props.results.businesses)
   }, [props.results])
 
   //MODAL 
@@ -78,7 +79,7 @@ export default function Results(props) {
             />
             <ImageListItemBar
               title={item.name}
-              subtitle={<span>{starDisplay(item.rating)}</span>}
+              subtitle={<span>{item && starDisplay(item.rating)}</span>}
               position="below"
               sx={{
                 background: 'black',
@@ -112,7 +113,7 @@ export default function Results(props) {
             <div>
               {random?.location?.address1}
             </div>
-            {starDisplay(random?.rating)}
+            {random && starDisplay(random?.rating)}
           </Typography>
         </Box>
       </Modal>

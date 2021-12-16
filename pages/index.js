@@ -92,7 +92,7 @@ export default function Home() {
       .then(response => response.text())
       .then(result => { 
         // console.log('result', result) 
-        setResults(result)
+        setResults(JSON.parse(result))
       })
       .catch(error => console.log('error', error));
 
