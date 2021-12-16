@@ -26,8 +26,8 @@ export default function Results(props) {
   }
 
   useEffect(() => {
-    console.log('res results', JSON.parse(props.results).businesses)
-    setItems(JSON.parse(props.results).businesses)
+    // console.log('res results', props.results && JSON.parse(props.results).businesses)
+    setItems(props.results && JSON.parse(props.results).businesses)
   }, [props.results])
 
   //MODAL 

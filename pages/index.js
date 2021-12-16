@@ -37,7 +37,7 @@ export default function Home() {
   }
 
   const setAllSelectedCategories = (cats) => {
-    console.log('index categories...', cats)
+    // console.log('index categories...', cats)
     let aliases = cats.map( c => c.alias)
     let alias_str = aliases.join()
     console.log(alias_str)
@@ -91,7 +91,7 @@ export default function Home() {
     fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?open_now=true&categories='${queryCategories}'&limit=50&location='${zip}'`, requestOptions)
       .then(response => response.text())
       .then(result => { 
-        console.log('result', result) 
+        // console.log('result', result) 
         setResults(result)
       })
       .catch(error => console.log('error', error));
@@ -129,7 +129,7 @@ export default function Home() {
 
   useEffect(() => {
     // getChoice()
-    console.log('activeStep', activeStep)
+    // console.log('activeStep', activeStep)
     activeStep === 2 && queryForResults()
   }, [activeStep])
 
