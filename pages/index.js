@@ -15,7 +15,9 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 import Zip from '../components/zip'
 import Categories from '../components/categories'
+import Results from '../components/results'
 
+// import bs from '../utils/businesses'
  
 // const yelp = require('yelp-fusion');
 // const client = yelp.client(process.env.YELP_FUSION_KEY);
@@ -27,6 +29,7 @@ export default function Home() {
   const [zip, setZip] = useState()
   const [categories, setCategories] = useState([])
   const [queryCategories, setQueryCategories] = useState()
+  const [results, setResults] = useState([])
 
   const setAllZips = (childZip) => {
     // console.log('index childZip', childZip)
@@ -87,8 +90,13 @@ export default function Home() {
 
     fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?open_now=true&categories='${queryCategories}'&limit=50&location='${zip}'`, requestOptions)
       .then(response => response.text())
-      .then(result => console.log(result))
+      .then(result => { 
+        console.log('result', result) 
+        setResults(result)
+      })
       .catch(error => console.log('error', error));
+
+
   }
 
   const steps = [
@@ -103,7 +111,7 @@ export default function Home() {
     },
     {
       label: 'Results',
-      // html: <Results />
+      html: <Results results={results}/>
     },
   ];
 
@@ -119,11 +127,11 @@ export default function Home() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  // useEffect(() => {
-  //   // getChoice()
-  //   console.log('activeStep', activeStep)
-
-  // }, [activeStep])
+  useEffect(() => {
+    // getChoice()
+    console.log('activeStep', activeStep)
+    activeStep === 2 && queryForResults()
+  }, [activeStep])
 
   // async function getChoice() {
   //   try {
